@@ -6,7 +6,7 @@ namespace BingChat
 {
     public class Runner : ApplicationContext
     {
-        NotifyIcon trayIcon = new();
+        NotifyIcon trayIcon;
         MainWindow mainWindow;
 
         public Runner(MainWindow mainWindow)
@@ -16,10 +16,15 @@ namespace BingChat
             var contextMenu = new ContextMenuStrip();
             contextMenu.Items.Add(exitMenu);
 
-            trayIcon.Icon = new System.Drawing.Icon("exe_icon.ico");
-            trayIcon.ContextMenuStrip = contextMenu;
-            trayIcon.Text = "Bing Chat";
-            trayIcon.Visible = true;
+            string icon_path = System.IO.Path.Combine(Windows.ApplicationModel.Package.Current.InstalledPath, "Assets/trayicon.ico");
+
+            trayIcon = new NotifyIcon()
+            {
+                Icon = new System.Drawing.Icon(icon_path),
+                ContextMenuStrip = contextMenu,
+                Text = "Bing Chat",
+                Visible = true
+            };
             trayIcon.Click += OnClick;
 
             this.mainWindow = mainWindow;

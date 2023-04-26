@@ -37,7 +37,6 @@ namespace BingChat
                 10,
                 desktopSize.Width / 3,
                 desktopSize.Height - 20);
-            //appWnd.MoveAndResize(new Windows.Graphics.RectInt32(1920 - 600 - 10, 10, 600, 1000));
             appWnd.MoveAndResize(rectWnd);
 
             var presenter = appWnd.Presenter as OverlappedPresenter;

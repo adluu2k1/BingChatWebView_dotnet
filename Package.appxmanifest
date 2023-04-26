@@ -8,12 +8,12 @@
 
   <Identity
     Name="635706d3-4f55-4fa4-8a24-87898d9ff800"
-    Publisher="CN=anhdu"
+    Publisher="CN=AD Luu"
     Version="1.0.0.0" />
 
   <Properties>
     <DisplayName>BingChat</DisplayName>
-    <PublisherDisplayName>anhdu</PublisherDisplayName>
+    <PublisherDisplayName>AD Luu</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -31,12 +31,12 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="BingChat"
-        Description="BingChat"
+        DisplayName="Bing Chat"
+        Description="A simple WebView2 implementation of Bing AI Chat website with trayicon integration."
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"  Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
