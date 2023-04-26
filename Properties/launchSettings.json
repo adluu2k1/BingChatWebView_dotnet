@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "BingChat (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "BingChat (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
