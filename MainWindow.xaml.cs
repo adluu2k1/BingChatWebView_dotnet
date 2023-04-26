@@ -65,15 +65,43 @@ namespace BingChat
 
         private void webView_CoreWebView2_NewWindowRequested(object sender, CoreWebView2NewWindowRequestedEventArgs e)
         {
-            e.Handled = true;
-            Process.Start(new ProcessStartInfo() { FileName = e.Uri, UseShellExecute = true });
+            try
+            {
+                e.Handled = true;
+                Process.Start(new ProcessStartInfo() { FileName = e.Uri, UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                Debug.Print(ex.ToString());
+#endif
+                System.Windows.Forms.MessageBox.Show(
+                    $"An error has occurred while processing the request.\n\n{ex.Message}",
+                    System.IO.Path.GetFileNameWithoutExtension(Environment.ProcessPath),
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Error);
+            }
         }
 
         private void MainWindowActivated(object sender, WindowActivatedEventArgs e)
         {
-            if (e.WindowActivationState == WindowActivationState.Deactivated)
+            try
             {
-                App.HideWindow(WinRT.Interop.WindowNative.GetWindowHandle(this));
+                if (e.WindowActivationState == WindowActivationState.Deactivated)
+                {
+                    App.HideWindow(WinRT.Interop.WindowNative.GetWindowHandle(this));
+                }
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                Debug.Print(ex.ToString());
+#endif
+                System.Windows.Forms.MessageBox.Show(
+                    $"An error has occurred while processing the request.\n\n{ex.Message}",
+                    System.IO.Path.GetFileNameWithoutExtension(Environment.ProcessPath),
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Error);
             }
         }
     }

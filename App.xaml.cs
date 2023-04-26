@@ -39,17 +39,33 @@ namespace BingChat
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            CheckForExistingInstance();
-            m_window = new MainWindow();
+            try
+            {
+                CheckForExistingInstance();
+                m_window = new MainWindow();
 
-            // Hide m_window from taskbar and Alt+Tab
-            SetWindowLongPtr(
-                WinRT.Interop.WindowNative.GetWindowHandle(m_window),
-                -20,
-                new IntPtr(0x00000080L));
+                // Hide m_window from taskbar and Alt+Tab
+                SetWindowLongPtr(
+                    WinRT.Interop.WindowNative.GetWindowHandle(m_window),
+                    -20,
+                    new IntPtr(0x00000080L));
 
-            m_window.Activate();
-            StartRunner();
+                m_window.Activate();
+                StartRunner();
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                Debug.Print(ex.ToString());
+#endif
+                System.Windows.Forms.MessageBox.Show(
+                    $"An error has occurred while launching the application.\n\n{ex.Message}",
+                    System.IO.Path.GetFileNameWithoutExtension(Environment.ProcessPath),
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Error);
+
+                Process.GetCurrentProcess().Kill();
+            }
         }
 
         private void StartRunner()
