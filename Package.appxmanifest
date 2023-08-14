@@ -9,7 +9,7 @@
   <Identity
     Name="635706d3-4f55-4fa4-8a24-87898d9ff800"
     Publisher="CN=AD Luu"
-    Version="1.0.0.0" />
+    Version="23.8.14.0" />
 
   <Properties>
     <DisplayName>BingChat</DisplayName>
