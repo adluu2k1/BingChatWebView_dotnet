@@ -51,7 +51,7 @@ namespace BingChat
 
         private WebView2 InitWebView()
         {
-            webView.Source = new Uri("https://www.bing.com/search?q=Bing+AI&showconv=1&FORM=hpcodx");
+            webView.Source = new Uri("https://www.bing.com/chat?form=NTPCHB");
             webView.CoreWebView2Initialized += webView_CoreWebView2Initialized;
 
             return webView;
