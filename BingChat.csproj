@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows10.0.22621.0</TargetFramework>
@@ -48,10 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Drawing.Common">
-      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.20\System.Drawing.Common.dll</HintPath>
+      <HintPath>C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.24\System.Drawing.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms">
-      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.20\System.Windows.Forms.dll</HintPath>
+      <HintPath>C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.24\System.Windows.Forms.dll</HintPath>
     </Reference>
   </ItemGroup>
 
