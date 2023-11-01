@@ -11,15 +11,10 @@ namespace BingChat
 
         public Runner(MainWindow mainWindow)
         {
-            var guestMenu = new ToolStripMenuItem("Guest Mode", null, new EventHandler(OnGuest))
-            {
-                Checked = false
-            };
             var exitMenu = new ToolStripMenuItem("Exit", null, new EventHandler(OnExit));
 
             var contextMenu = new ContextMenuStrip();
             contextMenu.Items.Add(exitMenu);
-            contextMenu.Items.Add(guestMenu);
 
             string icon_path = System.IO.Path.Combine(Windows.ApplicationModel.Package.Current.InstalledPath, "Assets/trayicon.ico");
 
@@ -38,12 +33,6 @@ namespace BingChat
         private void OnExit(object sender, EventArgs e)
         {
             Application.Exit();
-        }
-
-        private void OnGuest(object sender, EventArgs e)
-        {
-            var guestMenu = sender as ToolStripMenuItem;
-            guestMenu.Checked = !guestMenu.Checked;
         }
 
         private void OnClick(object sender, EventArgs e)
