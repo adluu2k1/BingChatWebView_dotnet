@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation and Contributors.
 // Licensed under the MIT License.
 
-using Microsoft.UI;
-using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using System;
 using System.Diagnostics;
@@ -20,9 +18,11 @@ namespace BingChat
     public partial class App : Application
     {
         [DllImport("user32.dll")]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
-        [DllImport("user32.dll")]
         private static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+
+        private static MainWindow m_window;
+
+        public static MainWindow MainWindow { get { return m_window; } }
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -48,10 +48,10 @@ namespace BingChat
                 SetWindowLongPtr(
                     WinRT.Interop.WindowNative.GetWindowHandle(m_window),
                     -20,
-                    new IntPtr(0x00000080L));
+                    new IntPtr(0x00000080L));   // WS_EX_TOOLWINDOW
 
                 m_window.Activate();
-                StartRunner();
+                Runner.Init();
             }
             catch (Exception ex)
             {
@@ -64,52 +64,8 @@ namespace BingChat
                     System.Windows.Forms.MessageBoxButtons.OK,
                     System.Windows.Forms.MessageBoxIcon.Error);
 
-                Process.GetCurrentProcess().Kill();
+                Application.Current.Exit();
             }
-        }
-
-        private void StartRunner()
-        {
-            Thread thr_runner = new Thread(() =>
-            {
-                System.Windows.Forms.Application.Run(new Runner(m_window));
-
-                // When the Runner exited, shut down the app
-                m_window.DispatcherQueue.TryEnqueue(() => this.Exit());
-            });
-
-            thr_runner.Start();
-        }
-
-        private void CheckForExistingInstance()
-        {
-            string process_name = System.IO.Path.GetFileNameWithoutExtension(Environment.ProcessPath);
-
-            if (Process.GetProcessesByName(process_name).Length > 1)
-            {
-                System.Windows.Forms.MessageBox.Show($"Another {process_name} process is already running!");
-                Process.GetCurrentProcess().Kill();
-            }
-        }
-
-        private MainWindow m_window;
-
-
-        public static void ShowWindow(IntPtr hWnd)
-        {
-            WindowId WndId = Win32Interop.GetWindowIdFromWindow(hWnd);
-            AppWindow Wnd = AppWindow.GetFromWindowId(WndId);
-
-            Wnd.Show(true);
-            SetForegroundWindow(hWnd);
-        }
-
-        public static void HideWindow(IntPtr hWnd)
-        {
-            WindowId WndId = Win32Interop.GetWindowIdFromWindow(hWnd);
-            AppWindow Wnd = AppWindow.GetFromWindowId(WndId);
-
-            Wnd.Hide();
         }
     }
 }

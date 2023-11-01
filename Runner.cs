@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BingChat
@@ -7,9 +8,8 @@ namespace BingChat
     public class Runner : ApplicationContext
     {
         NotifyIcon trayIcon;
-        MainWindow mainWindow;
 
-        public Runner(MainWindow mainWindow)
+        public Runner()
         {
             var exitMenu = new ToolStripMenuItem("Exit", null, new EventHandler(OnExit));
 
@@ -26,8 +26,18 @@ namespace BingChat
                 Visible = true
             };
             trayIcon.Click += OnClick;
+        }
 
-            this.mainWindow = mainWindow;
+        public static void Init()
+        {
+            Task runner = new Task(() =>
+            {
+                System.Windows.Forms.Application.Run(new Runner());
+
+                // When the Runner exited, shut down the app
+                App.MainWindow.DispatcherQueue.TryEnqueue(() => App.Current.Exit());
+            });
+            runner.Start();
         }
 
         private void OnExit(object sender, EventArgs e)
@@ -42,7 +52,7 @@ namespace BingChat
                 var mouseEventArgs = e as MouseEventArgs;
                 if (mouseEventArgs.Button == MouseButtons.Left)
                 {
-                    mainWindow.DispatcherQueue.TryEnqueue(() => App.ShowWindow(WinRT.Interop.WindowNative.GetWindowHandle(mainWindow)));
+                    App.MainWindow.DispatcherQueue.TryEnqueue(() => App.MainWindow.Show());
                 }
             }
             catch (Exception ex)

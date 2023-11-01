@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation and Contributors.
 // Licensed under the MIT License.
 
-using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -9,6 +8,7 @@ using Microsoft.Web.WebView2.Core;
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -20,6 +20,13 @@ namespace BingChat
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        [DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+        [DllImport("user32.dll")]
+        private static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+
+        private IntPtr hWnd;
+
         public WebView2 webView = new();
 
         public MainWindow()
@@ -27,9 +34,7 @@ namespace BingChat
             this.InitializeComponent();
             this.Activated += MainWindowActivated;
 
-            IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
-            WindowId WndId = Win32Interop.GetWindowIdFromWindow(hWnd);
-            AppWindow appWnd = AppWindow.GetFromWindowId(WndId);
+            hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
 
             Size desktopSize = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Size;
             var rectWnd = new Windows.Graphics.RectInt32(
@@ -37,9 +42,9 @@ namespace BingChat
                 10,
                 desktopSize.Width / 3,
                 desktopSize.Height - 20);
-            appWnd.MoveAndResize(rectWnd);
+            this.AppWindow.MoveAndResize(rectWnd);
 
-            var presenter = appWnd.Presenter as OverlappedPresenter;
+            var presenter = this.AppWindow.Presenter as OverlappedPresenter;
             presenter.IsResizable = false;
             presenter.IsMaximizable = false;
             presenter.IsMinimizable = false;
@@ -88,7 +93,7 @@ namespace BingChat
             {
                 if (e.WindowActivationState == WindowActivationState.Deactivated)
                 {
-                    App.HideWindow(WinRT.Interop.WindowNative.GetWindowHandle(this));
+                    this.Hide();
                 }
             }
             catch (Exception ex)
@@ -102,6 +107,16 @@ namespace BingChat
                     System.Windows.Forms.MessageBoxButtons.OK,
                     System.Windows.Forms.MessageBoxIcon.Error);
             }
+        }
+
+        public void Show()
+        {
+            this.AppWindow.Show(true);
+            SetForegroundWindow(hWnd);
+        }
+        public void Hide()
+        {
+            this.AppWindow.Hide();
         }
     }
 }
