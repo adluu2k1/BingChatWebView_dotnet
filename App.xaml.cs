@@ -21,6 +21,7 @@ namespace BingChat
         private static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
         private static MainWindow m_window;
+        private static Mutex mutex = new Mutex(true, "635706d3-4f55-4fa4-8a24-87898d9ff800");
 
         public static MainWindow MainWindow { get { return m_window; } }
 
@@ -30,7 +31,16 @@ namespace BingChat
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
+            if (IsAnotherInstanceRunning())
+            {
+                DuplicatedInstanceHandler.SendDIConnectionRequest();
+                Process.GetCurrentProcess().Kill();
+            }
+            else
+            {
+                mutex.ReleaseMutex();
+                InitializeComponent();
+            }
         }
 
         /// <summary>
@@ -41,7 +51,6 @@ namespace BingChat
         {
             try
             {
-                CheckForExistingInstance();
                 m_window = new MainWindow();
 
                 // Hide m_window from taskbar and Alt+Tab
@@ -52,6 +61,7 @@ namespace BingChat
 
                 m_window.Activate();
                 Runner.Init();
+                DuplicatedInstanceListener.StartListening();
             }
             catch (Exception ex)
             {
@@ -66,6 +76,11 @@ namespace BingChat
 
                 Application.Current.Exit();
             }
+        }
+
+        private bool IsAnotherInstanceRunning()
+        {
+            return !mutex.WaitOne(0, true);
         }
     }
 }
