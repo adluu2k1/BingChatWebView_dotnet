@@ -7,12 +7,12 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="635706d3-4f55-4fa4-8a24-87898d9ff801"
+    Name="635706d3-4f55-4fa4-8a24-87898d9ff800"
     Publisher="CN=AD Luu"
-    Version="0.0.7.0" />
+    Version="23.11.1.0" />
 
   <Properties>
-    <DisplayName>BingChat_Dev</DisplayName>
+    <DisplayName>BingChat</DisplayName>
     <PublisherDisplayName>AD Luu</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -31,7 +31,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="Bing Chat (Dev)"
+        DisplayName="Bing Chat"
         Description="A simple WebView2 implementation of Bing AI Chat website with trayicon integration."
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
